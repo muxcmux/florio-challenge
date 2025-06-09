@@ -1,0 +1,10 @@
+services:
+  app:
+    build: .
+    command: /bin/sh -c "rm tmp/pids/server.pid || true && bundle && bin/rails s -b 0.0.0.0"
+    volumes:
+      - .:/app
+    ports:
+      - "3000:3000"
+      # uncomment to access prometheus metrics endpoint
+      # - "9394:9394"

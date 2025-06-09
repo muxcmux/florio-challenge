@@ -1,0 +1,296 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "API V1",
+    "version": "v1"
+  },
+  "paths": {
+    "/api/v1/injections.json": {
+      "get": {
+        "summary": "List patient injections",
+        "security": [
+          {
+            "basic_auth": [
+              ""
+            ]
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns a list of injections for the authenticated patient",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Returns a list of injections for the authenticated patient": {
+                    "value": {
+                      "injections": [
+                        {
+                          "dose": 9,
+                          "lot_number": "123abc",
+                          "drug_name": "Aspirin",
+                          "created_at": "2025-06-08T17:16:36.142Z",
+                          "updated_at": "2025-06-09T17:16:36.142Z"
+                        },
+                        {
+                          "dose": 3,
+                          "lot_number": "123abc",
+                          "drug_name": "Aspirin",
+                          "created_at": "2025-06-05T17:16:36.140Z",
+                          "updated_at": "2025-06-09T17:16:36.141Z"
+                        },
+                        {
+                          "dose": 1,
+                          "lot_number": "123abc",
+                          "drug_name": "Aspirin",
+                          "created_at": "2025-06-02T17:16:36.140Z",
+                          "updated_at": "2025-06-09T17:16:36.140Z"
+                        },
+                        {
+                          "dose": 8,
+                          "lot_number": "123abc",
+                          "drug_name": "Aspirin",
+                          "created_at": "2025-05-30T17:16:36.130Z",
+                          "updated_at": "2025-06-09T17:16:36.139Z"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a record of an injection",
+        "security": [
+          {
+            "basic_auth": [
+              ""
+            ]
+          }
+        ],
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": "Create an injection record for a patient",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Create an injection record for a patient": {
+                    "value": {
+                      "injection": {
+                        "dose": 100,
+                        "lot_number": "1234ab",
+                        "drug_name": "Some drug",
+                        "created_at": "2025-06-09T17:16:36.201Z",
+                        "updated_at": "2025-06-09T17:16:36.201Z"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Creating an injection with invalid data returns semantic errors",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Creating an injection with invalid data returns semantic errors": {
+                    "value": {
+                      "errors": [
+                        {
+                          "attribute": "lot_number",
+                          "message": "is the wrong length (should be 6 characters)",
+                          "reason": "validation"
+                        },
+                        {
+                          "attribute": "drug_name",
+                          "message": "can't be blank",
+                          "reason": "validation"
+                        },
+                        {
+                          "attribute": "dose",
+                          "message": "is not a number",
+                          "reason": "validation"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "dose": {
+                    "description": "Dose in milliliters",
+                    "type": "integer"
+                  },
+                  "drug_name": {
+                    "description": "The name of the injected drug",
+                    "type": "string"
+                  },
+                  "lot_number": {
+                    "description": "Drug lot number. Must be 6 alphanumeric characters long",
+                    "type": "string"
+                  }
+                }
+              },
+              "examples": {
+                "Create an injection record for a patient": {
+                  "summary": "Create an injection record for a patient",
+                  "value": {
+                    "dose": 100,
+                    "drug_name": "Some drug",
+                    "lot_number": "1234ab"
+                  }
+                },
+                "Creating an injection with invalid data returns semantic errors": {
+                  "summary": "Creating an injection with invalid data returns semantic errors",
+                  "value": {
+                    "dose": "asdf",
+                    "lot_number": "invalid"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/patients/adherence_score.json": {
+      "get": {
+        "summary": "Get the adherence score for a patient",
+        "security": [
+          {
+            "basic_auth": [
+              ""
+            ]
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns the adherence score",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Returns the adherence score": {
+                    "value": {
+                      "schedule_days": 3,
+                      "expected_injections": 4,
+                      "actual_injections": 4,
+                      "on_time_injections": 2,
+                      "adherence_score": 50.0
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/patients.json": {
+      "post": {
+        "summary": "Create a new patient",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": "Create a new patient with 5 days injection schedule",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Create a new patient with 5 days injection schedule": {
+                    "value": {
+                      "id": 1,
+                      "schedule_days": 5,
+                      "key": "13f4f8e3-de30-4d3f-b5e9-a23d3bbb7ce4",
+                      "secret": "7f28d81fd14058a4ed644fda1ace1aac",
+                      "created_at": "2025-06-09T17:16:36.244Z",
+                      "updated_at": "2025-06-09T17:16:36.244Z"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Creating a patient with invalid schedule returns a semantic error",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Creating a patient with invalid schedule returns a semantic error": {
+                    "value": {
+                      "errors": [
+                        {
+                          "attribute": "schedule_days",
+                          "message": "is not a number",
+                          "reason": "validation"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "schedule_days": {
+                    "description": "Treatment schedule in days, e.g. 3",
+                    "type": "integer"
+                  }
+                }
+              },
+              "examples": {
+                "Create a new patient with 5 days injection schedule": {
+                  "summary": "Create a new patient with 5 days injection schedule",
+                  "value": {
+                    "schedule_days": 5
+                  }
+                },
+                "Creating a patient with invalid schedule returns a semantic error": {
+                  "summary": "Creating a patient with invalid schedule returns a semantic error",
+                  "value": {
+                    "schedule_days": "asdf"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000",
+      "variables": {
+        "defaultHost": {
+          "default": "http://localhost:3000"
+        }
+      }
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "basic_auth": {
+        "type": "http",
+        "scheme": "basic",
+        "in": "header"
+      }
+    }
+  }
+}
