@@ -6,9 +6,14 @@ You need docker installed on your system. Run `docker compose up` to boot the ap
 Docker compose is used to mount current dir to `/app` in the container, so that state is
 preserved between reboots.
 
+    git clone git@github.com:muxcmux/florio-challenge.git challenge
+
 ### Migrate the database
 
     docker exec -it challenge-app-1 bundle exec rails db:migrate
+
+`challenge-app-1` is the name automatically given by docker compose. If you have cloned in
+a different dir, then change this accordingly
 
 ## Usage
 
@@ -26,5 +31,6 @@ The available endpoints are:
 
 ### Metrics
 Yabeda is configured to collect basic rails metrics: # of reqs, req duration, db query and
-view rendering time, etc.
+view rendering time, etc. By default it runs a prometheus exporter on port 9394, but this
+is disabled by default. To enable it, open `compose.yml` and uncomment 9394 port forwarding
 
