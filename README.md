@@ -34,3 +34,19 @@ Yabeda is configured to collect basic rails metrics: # of reqs, req duration, db
 view rendering time, etc. By default it runs a prometheus exporter on port 9394, but this
 is disabled by default. To enable it, open `compose.yml` and uncomment 9394 port forwarding
 
+
+## Implemented features
+
+✅ Build an endpoint that allows the creation of a patient. A patient has an id and a secure api_key which should be randomly generated.
+✅ Build an endpoint that allows the creation of an injection. An injection consists of its dose (in millimeters), lot number (an alphanumeric text of 6 characters), drug name, and is associated with a specific patient.
+✅ Build an endpoint that allows the retrieval of injections associated with a patient.
+✅ Build an endpoint that allows the retrieval of the patient’s adherence score.
+✅ The injection and adherence score endpoints should be publicly available but protected by an api_key.
+✅ The code should be tested.
+
+### Bonus features
+
+✅ Documentation for the API (OpenAPI, API Blueprint, RAML, etc).
+✅ Exposing metrics (hardware, health, requests, etc) available for a Prometheus agent to capture - this endpoint should not be publicly accessible.
+✅ If using Github or GitLab, use any free tier of CI/CD products (Travis, circle, actions, etc) to run the tests and linters when pushing upstream.
+❌ A frontend.
